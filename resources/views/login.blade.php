@@ -311,7 +311,7 @@
     </div> -->
     <div class="links">
       <a href="#">Forgot Password</a>
-      <a href="signup.html">Signup</a>
+      <a href="{{url('register')}}">Signup</a>
     </div>
     <div class="input-field button">
       <input  id="login" type="submit" value="Login Now" />
@@ -349,13 +349,18 @@
               data:data,
               success: function(response) {
                 console.log('Success:', response);
+                if(response.status==200){
+                  window.location.href="{{url('/posts')}}"
+                }else{
+                  alert('Credential does not match with our records!!')
+                }
+               
               },
               error: function(xhr, status, error) {
                 console.log('Error:', status, error);
               },
               complete: function() {
                 $('#login').prop('disabled', false);
-                window.location.href="{{url('/posts')}}"
               }
             });
 
