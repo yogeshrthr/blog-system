@@ -11,8 +11,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'check.Login' => \App\Http\Middleware\AuthMiddleware::class,
+        ]);
     })
+    // ->withEvents(function (Events $evnts):void{
+    //     $evnts->listen(
+    //         PostBecamePopular::class,
+    //         SendPopularPostNotification::class,
+    //     );
+    // })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

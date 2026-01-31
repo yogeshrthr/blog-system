@@ -56,9 +56,9 @@ class User extends Authenticatable
         return $this->name.'---'.$this->id;
     }
     // mutatonr
-    public function setNameAttribute($value){
-         $this->attributes['name']=Hash::make($value);
-    }
+    // public function setNameAttribute($value){
+    //      $this->attributes['name']=Hash::make($value);
+    // }
 
 
     // scopes

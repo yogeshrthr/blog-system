@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Service\PostService;
+use App\Models\Post;
+use App\Events\PostBecamePopular;
 
 class PostController extends Controller
 {
@@ -17,8 +19,12 @@ class PostController extends Controller
     
     public function index()
     {
+
+        // $post = Post::find(1); // example post
+   
         // Service से posts लो (with caching)
         $posts = $this->postService->getPosts();
+        
         return view('posts.index', compact('posts'));
     }
     
@@ -29,6 +35,7 @@ class PostController extends Controller
     
     public function store(Request $request)
     {
+        
         $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
@@ -37,7 +44,6 @@ class PostController extends Controller
         
         // Service use करो - सारा logic वहाँ है
         $post = $this->postService->createPost($request->all());
-        
         return redirect()->route('posts.show', $post)
                          ->with('success', 'Post created successfully!');
     }

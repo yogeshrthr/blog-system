@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 use App\Service\PostService;
+use Illuminate\Pagination\Paginator; // Add this
 
 use Illuminate\Support\ServiceProvider;
 
@@ -22,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Paginator::useBootstrapFive(); // Add this line
     }
 }
