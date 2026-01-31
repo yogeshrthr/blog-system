@@ -20,6 +20,8 @@ class PostService {
         $this->clearPostCache();
         
         // 3. Return post
+
+        $post = Post::with('user')->orderBy('id','desc')->first();
         return $post;
     }
 
@@ -28,11 +30,11 @@ class PostService {
      */
     public function clearPostCache()
     {
-        Cache::forget('recent_posts');
-        Cache::forget('popular_posts');
-        // Clear paginated cache
-        Cache::forget('posts.page.1');
-        Cache::forget('posts.page.2');
+        // Cache::forget('recent_posts');
+        // Cache::forget('popular_posts');
+        // // Clear paginated cache
+        // Cache::forget('posts.page.1');
+        // Cache::forget('posts.page.2');
         // ... etc
     }
     
@@ -41,10 +43,9 @@ class PostService {
      */
     public function incrementViews(Post $post)
     {
-        $post->increment('views');
-        
+        $post->increment('views');        
         // If views cross 1000, mark as popular
-        if ($post->views > 1000 && !$post->is_popular) {
+        if ($post->views > 5 && !$post->is_popular) {
             $post->update(['is_popular' => true]);
             event(new PostBecamePopular($post)); // Event trigger
         }
@@ -53,16 +54,16 @@ class PostService {
     /**
      * Get posts with caching
      */
-    public function getPosts($limit = 10)
+    public function getPosts($limit = 5)
     {
-        $cacheKey = 'posts.page.' . request()->get('page', 1);
+        // $cacheKey = 'posts.page.' . request()->get('page', 1);
         
-        return Cache::remember($cacheKey, 3600, function() use ($limit) {
+        // return Cache::remember($cacheKey, 3600, function() use ($limit) {
             return Post::with('user')
                        ->where('is_published', true)
                        ->latest()
                        ->paginate($limit);
-        });
+        // });
     }
    
 

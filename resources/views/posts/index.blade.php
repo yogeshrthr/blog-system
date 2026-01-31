@@ -1,4 +1,3 @@
-{{-- resources/views/posts/index.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
@@ -12,13 +11,22 @@
     @foreach($posts as $post)
         <div class="card mb-3">
             <div class="card-body">
-                <h5 class="card-title">{{ $post->title }}</h5>
+                <h5 class="card-title">
+                    {{ $post->title }}
+                    {{-- Show Popular badge if is_popular --}}
+                    @if($post->is_popular)
+                        <span class="badge bg-success float-end">Popular</span>
+                    @endif
+                </h5>
+                
                 <p class="card-text">{{ Str::limit($post->content, 200) }}</p>
+                
                 <p class="text-muted">
-                    By {{ $post->user->name }} | 
+                    By {{ $post->user->name }} |
                     Views: {{ $post->views }} |
                     {{ $post->created_at->diffForHumans() }}
                 </p>
+                
                 <a href="{{ route('posts.show', $post) }}" class="btn btn-sm btn-info">
                     Read More
                 </a>
@@ -26,6 +34,9 @@
         </div>
     @endforeach
     
-    {{ $posts->links() }}
+    {{-- Laravel default pagination --}}
+    <div class="d-flex">
+        {{ $posts->links() }}
+    </div>
 </div>
 @endsection

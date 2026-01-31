@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('content');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->boolean('is_published')->default(false);
+            $table->boolean('is_popular')->default(false);
             $table->integer('views')->default(0);
             $table->timestamps();
         });
